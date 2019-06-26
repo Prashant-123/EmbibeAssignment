@@ -1,0 +1,19 @@
+{
+    "logs": [
+        {
+            "outputFile": "/home/prashant/StudioProjects/EmbibeAssignment/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-port/values-port.xml",
+            "map": [
+                {
+                    "source": "/home/prashant/.gradle/caches/transforms-2/files-2.1/708e7e35f09642dde17e14d71a147d3f/appcompat-1.1.0-alpha03/res/values-port/values-port.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "55",
+                        "endOffsets": "106"
+                    }
+                }
+            ]
+        }
+    ]
+}
