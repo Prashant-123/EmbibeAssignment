@@ -27,7 +27,7 @@ public class SplashScreen extends Fragment {
                 ft.replace(R.id.main_frame, new Movies());
                 ft.commit();
             }
-        }, 2000);
+        }, 000);
 
         return view;
     }
