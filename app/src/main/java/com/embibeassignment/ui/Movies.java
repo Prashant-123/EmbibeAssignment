@@ -10,6 +10,7 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -79,6 +80,7 @@ public class Movies extends Fragment {
         toolbar.setTitle(null);
 
         movie_list.clear();
+        db.clearDB();
         view.getContext().startService(serviceIntent);
 
         adapter = new MovieAdapter(view.getContext(), movie_list);
@@ -100,6 +102,7 @@ public class Movies extends Fragment {
     public void onPause() {
         getContext().unregisterReceiver(receiver);
         getContext().stopService(serviceIntent);
+        Log.i(TAG, "onPause: ");
         super.onPause();
     }
 
@@ -143,7 +146,7 @@ public class Movies extends Fragment {
             public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
                 // loaded bitmap is here (bitmap)
                 NotificationCompat.Builder builder = new NotificationCompat.Builder(context, CHANNEL_ID)
-                        .setSmallIcon(R.drawable.ic_icon)
+                        .setSmallIcon(R.drawable.ic_notification)
                         .setContentTitle("New Movie Available: " + title)
                         .setLargeIcon(bitmap)
                         .setContentText(overview)

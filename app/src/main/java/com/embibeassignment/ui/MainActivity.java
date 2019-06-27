@@ -32,8 +32,6 @@ public class MainActivity extends AppCompatActivity {
 
         new FetchMovies().execute();
 
-        _ShowSplashScreen();
-
     }
 
     @Override
@@ -48,15 +46,20 @@ public class MainActivity extends AppCompatActivity {
         ft.commit();
     }
 
-    static class FetchMovies extends AsyncTask<Void, Void, Void> {
+    class FetchMovies extends AsyncTask<Void, Void, Void> {
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            _ShowSplashScreen();
+        }
 
         @Override
         protected Void doInBackground(Void... voids) {
             String API_KEY = BuildConfig.API_KEY;
-            AndroidNetworking.get("https://api.themoviedb.org/3/movie/{type}?api_key={api_key}&page={page_no}")
+            AndroidNetworking.get("https://api.themoviedb.org/3/movie/{type}?api_key={api_key}")
                     .addPathParameter("api_key", API_KEY)
                     .addPathParameter("type", "top_rated")
-                    .addPathParameter("page_no", "1")
                     .build()
                     .getAsJSONObject(new JSONObjectRequestListener() {
                         @Override

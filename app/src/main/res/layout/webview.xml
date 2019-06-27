@@ -6,7 +6,6 @@
 
 
     <com.google.android.material.appbar.MaterialToolbar
-        xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/toolbar_webview"
         android:background="@color/colorPrimary"

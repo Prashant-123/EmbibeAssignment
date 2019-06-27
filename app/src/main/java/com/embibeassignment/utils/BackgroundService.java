@@ -42,6 +42,8 @@ public class BackgroundService extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        task.cancel();
+        timer.purge();
     }
 
     @Override
@@ -63,7 +65,6 @@ public class BackgroundService extends Service {
 
                     index++;
                 } else {
-                    Log.i(TAG, "run: " + "ALL MOVIEs ADDED");
                     timer.cancel();
                 }
             }

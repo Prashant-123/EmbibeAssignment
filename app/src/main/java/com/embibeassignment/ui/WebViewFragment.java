@@ -53,13 +53,17 @@ public class WebViewFragment extends Fragment {
             @Override
             public void onPageStarted(WebView view, String url, Bitmap favicon) {
                 super.onPageStarted(view, url, favicon);
-                toolbar.setTitle(getString(R.string.loading));
+                try {
+                    toolbar.setTitle(getString(R.string.loading));
+                } catch (Exception e){}
             }
 
             @Override
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
-                toolbar.setTitle(getResources().getString(R.string.imdb));
+                try {
+                    toolbar.setTitle(getResources().getString(R.string.imdb));
+                } catch (Exception e){}
             }
         });
         webView.loadUrl(URL);
