@@ -15,6 +15,7 @@ public class SplashScreen extends Fragment {
 
     public SplashScreen() {}
 
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -27,7 +28,7 @@ public class SplashScreen extends Fragment {
                 ft.replace(R.id.main_frame, new Movies());
                 ft.commit();
             }
-        }, 000);
+        }, 2000);
 
         return view;
     }

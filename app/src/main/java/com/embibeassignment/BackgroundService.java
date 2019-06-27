@@ -16,13 +16,14 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import static com.embibeassignment.Movies.TAG;
-import static com.embibeassignment.Movies.results;
+import static com.embibeassignment.MainActivity.results;
 
 public class BackgroundService extends Service {
 
     private String API_KEY = BuildConfig.API_KEY;
     private Timer timer;
     private DBHelper db;
+    private TimerTask task;
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -37,15 +38,21 @@ public class BackgroundService extends Service {
 
     @Override
     public void onDestroy() {
+        super.onDestroy();
+        task.cancel();
         timer.cancel();
     }
+
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
 
-        TimerTask task = new TimerTask() {
+        task = new TimerTask() {
             int index = 0;
             @Override
             public void run() {
+
+                Log.i(TAG, "run: " + "Thread executed");
+
                 if (index < results.length()) {
                     try {
                         JSONObject response = (JSONObject) results.get(index);
@@ -61,14 +68,13 @@ public class BackgroundService extends Service {
                     Log.i(TAG, "run: " + "ALL MOVIEs ADDED");
                     timer.cancel();
                 }
-
             }
         };
 
         timer = new Timer();
-        timer.scheduleAtFixedRate(task, 0, 1000);
+        timer.scheduleAtFixedRate(task, 0, 5000);
 
-        return START_NOT_STICKY;
+        return START_STICKY;
     }
 
 

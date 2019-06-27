@@ -11,7 +11,6 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final String DATABASE_NAME = "movie.db";
     private static final int DATABASE_VERSION = 1;
 
-
     public static final String TABLE_NAME = "movies";
     public static final String ID = "id";
     public static final String TITLE = "title";
@@ -21,7 +20,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     public static final String CREATE_TABLE =
             "CREATE TABLE " + TABLE_NAME + "("
-                    + ID + " TEXT,"
+                    + ID + " TEXT UNIQUE,"
                     + IMAGE + " TEXT,"
                     + TITLE + " TEXT,"
                     + YEAR + " TEXT,"
@@ -49,6 +48,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     public void clearDB() {
         SQLiteDatabase db = this.getWritableDatabase();
+
         db.execSQL("DELETE FROM " + TABLE_NAME);
     }
 
