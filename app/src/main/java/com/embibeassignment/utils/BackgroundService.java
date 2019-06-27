@@ -71,7 +71,7 @@ public class BackgroundService extends Service {
         };
 
         timer = new Timer();
-        timer.scheduleAtFixedRate(task, 0, 5000);
+        timer.scheduleAtFixedRate(task, 0, 30000);
 
         return START_STICKY;
     }
