@@ -10,7 +10,6 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/toolbar_webview"
         android:background="@color/colorPrimary"
-        android:elevation="0dp"
         app:theme="@style/Theme.AppCompat.Light.DarkActionBar"
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize">

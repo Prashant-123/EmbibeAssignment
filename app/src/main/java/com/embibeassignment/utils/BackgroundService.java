@@ -9,6 +9,7 @@ import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
 import com.embibeassignment.BuildConfig;
+import com.embibeassignment.R;
 import com.embibeassignment.ui.Movies;
 
 import org.json.JSONArray;
@@ -103,7 +104,7 @@ public class BackgroundService extends Service {
                             if (i == genres.length()-1)
                                 db.insertMovie(id, title, imageUrl, year, String.valueOf(rating), overview, genre.substring(0, genre.length()-2));
                         } catch (Exception e) {
-                            db.insertMovie(id, title, imageUrl, year, String.valueOf(rating), overview, "No Genre Specified");
+                            db.insertMovie(id, title, imageUrl, year, String.valueOf(rating), overview, getString(R.string.no_genre));
                         }
                     }
 

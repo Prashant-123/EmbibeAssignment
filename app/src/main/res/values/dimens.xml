@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="model_margin">10dp</dimen>
+    <dimen name="model_radius">10dp</dimen>
+    <dimen name="model_top_margin">20dp</dimen>
+    <dimen name="model_left_margin">24dp</dimen>
+    <dimen name="model_right_margin">8dp</dimen>
+    <dimen name="model_title_text">24sp</dimen>
+    <dimen name="model_year_tvsize">16sp</dimen>
+    <dimen name="model_year_right_margin">24dp</dimen>
+    <dimen name="splash_icon">120dp</dimen>
+    <dimen name="splash_text_margin">140dp</dimen>
+    <dimen name="splash_textsize">28sp</dimen>
+    <dimen name="toolbar_tv_size">20sp</dimen>
+</resources>

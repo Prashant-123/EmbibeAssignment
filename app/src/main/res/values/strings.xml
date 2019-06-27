@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">Embibe Assignment</string>
+    <string name="model_text">Guardian of The Galaxy Vol.2</string>
+    <string name="model_year">2016</string>
+    <string name="movie_app">Movie App</string>
+    <string name="loading">Loading...</string>
+    <string name="imdb">IMDB</string>
+    <string name="back_error">This is the First Movie</string>
+    <string name="fwd_error">This is the Last One</string>
+    <string name="no_genre">No Genre Specified</string>
 </resources>

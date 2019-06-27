@@ -53,13 +53,13 @@ public class WebViewFragment extends Fragment {
             @Override
             public void onPageStarted(WebView view, String url, Bitmap favicon) {
                 super.onPageStarted(view, url, favicon);
-                toolbar.setTitle("Loading...");
+                toolbar.setTitle(getString(R.string.loading));
             }
 
             @Override
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
-                toolbar.setTitle("IMDB");
+                toolbar.setTitle(getResources().getString(R.string.imdb));
             }
         });
         webView.loadUrl(URL);
@@ -77,7 +77,7 @@ public class WebViewFragment extends Fragment {
                 getFragmentManager().popBackStack();
             }
         });
-        toolbar.setTitle("Loading...");
+        toolbar.setTitle(getResources().getString(R.string.loading));
         toolbar.setTitleTextColor(getResources().getColor(R.color.white));
     }
 
@@ -94,7 +94,7 @@ public class WebViewFragment extends Fragment {
         switch (item.getItemId()) {
             case R.id.action_back:
                 if (index-1 < 0) {
-                    Toast.makeText(getContext(), "This is the First Movie", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), R.string.back_error, Toast.LENGTH_SHORT).show();
                 } else {
                  webView.loadUrl("https://www.imdb.com/title/"+movie_list.get(index - 1).id);
                  index-=1;
@@ -103,7 +103,7 @@ public class WebViewFragment extends Fragment {
                 return true;
             case R.id.action_forward:
                 if (index + 1 >= movie_list.size()) {
-                    Toast.makeText(getContext(), "This is the Last One", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), R.string.fwd_error, Toast.LENGTH_SHORT).show();
                 } else {
                     webView.loadUrl("https://www.imdb.com/title/"+movie_list.get(index + 1).id);
                     index+=1;
