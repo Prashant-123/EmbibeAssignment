@@ -1,7 +1,7 @@
-package com.embibeassignment;
+package com.embibeassignment.ui;
 
+import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -15,15 +15,12 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 
+import com.embibeassignment.R;
 import com.google.android.material.appbar.MaterialToolbar;
 
-import java.util.ListIterator;
-
-import static com.embibeassignment.Movies.TAG;
-import static com.embibeassignment.Movies.movie_list;
+import static com.embibeassignment.ui.Movies.movie_list;
 
 public class WebViewFragment extends Fragment {
 
@@ -44,10 +41,7 @@ public class WebViewFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.webview, container, false);
 
-        toolbar = view.findViewById(R.id.toolbar_webview);
-        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
-        toolbar.setTitle("IMDB");
-        toolbar.setTitleTextColor(getResources().getColor(R.color.white));
+        _SetupToolbar(view);
 
         index = this.getArguments().getInt("index");
         String URL = "https://www.imdb.com/title/".concat(this.getArguments().getString("id"));
@@ -55,10 +49,36 @@ public class WebViewFragment extends Fragment {
         webView.getSettings().setSupportZoom(true);
         webView.getSettings().setBuiltInZoomControls(true);
         webView.getSettings().setDisplayZoomControls(true);
-        webView.setWebViewClient(new WebViewClient());
+        webView.setWebViewClient(new WebViewClient() {
+            @Override
+            public void onPageStarted(WebView view, String url, Bitmap favicon) {
+                super.onPageStarted(view, url, favicon);
+                toolbar.setTitle("Loading...");
+            }
+
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                super.onPageFinished(view, url);
+                toolbar.setTitle("IMDB");
+            }
+        });
         webView.loadUrl(URL);
 
         return view;
+    }
+
+    private void _SetupToolbar(View view) {
+        toolbar = view.findViewById(R.id.toolbar_webview);
+        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
+        toolbar.setNavigationIcon(R.drawable.ic_arrow_back_black_24dp);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getFragmentManager().popBackStack();
+            }
+        });
+        toolbar.setTitle("Loading...");
+        toolbar.setTitleTextColor(getResources().getColor(R.color.white));
     }
 
     @Override
@@ -73,10 +93,11 @@ public class WebViewFragment extends Fragment {
 
         switch (item.getItemId()) {
             case R.id.action_back:
-                if (index-1 < 0){
+                if (index-1 < 0) {
                     Toast.makeText(getContext(), "This is the First Movie", Toast.LENGTH_SHORT).show();
                 } else {
-                 webView.loadUrl(movie_list.get(index - 1).imageUrl);
+                 webView.loadUrl("https://www.imdb.com/title/"+movie_list.get(index - 1).id);
+                 index-=1;
                 }
 
                 return true;
@@ -84,7 +105,8 @@ public class WebViewFragment extends Fragment {
                 if (index + 1 >= movie_list.size()) {
                     Toast.makeText(getContext(), "This is the Last One", Toast.LENGTH_SHORT).show();
                 } else {
-                    webView.loadUrl(movie_list.get(index + 1).imageUrl);
+                    webView.loadUrl("https://www.imdb.com/title/"+movie_list.get(index + 1).id);
+                    index+=1;
                 }
 
                 return true;

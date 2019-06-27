@@ -1,4 +1,4 @@
-package com.embibeassignment;
+package com.embibeassignment.adapter;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
@@ -19,6 +19,10 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.embibeassignment.utils.CustomFilter;
+import com.embibeassignment.models.MovieModel;
+import com.embibeassignment.R;
+import com.embibeassignment.ui.WebViewFragment;
 import com.google.android.material.circularreveal.cardview.CircularRevealCardView;
 
 import java.util.ArrayList;
@@ -52,6 +56,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
         holder.title.setText(movies.get(position).title);
         holder.year.setText(movies.get(position).year);
         holder.ratingBar.setRating(movies.get(position).rating);
+        holder.genre.setText(movies.get(position).genre);
 
         Glide.with(holder.itemView).load(movies.get(position).imageUrl)
                 .into(holder.poster);
@@ -90,7 +95,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        TextView title, year;
+        TextView title, year, genre;
         RatingBar ratingBar;
         ImageView poster;
         CircularRevealCardView model;
@@ -101,6 +106,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
             year = itemView.findViewById(R.id.year);
             ratingBar = itemView.findViewById(R.id.ratingBar);
             poster = itemView.findViewById(R.id.poster);
+            genre = itemView.findViewById(R.id.genre);
             model = itemView.findViewById(R.id.model);
         }
     }

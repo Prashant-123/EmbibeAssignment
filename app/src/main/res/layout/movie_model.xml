@@ -74,6 +74,16 @@
 
             </LinearLayout>
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/app_name"
+                android:layout_marginTop="10sp"
+                android:id="@+id/genre"
+                android:fontFamily="@font/montserrat"
+                android:textStyle="bold"
+                android:textColor="@color/colorPrimary"/>
+
         </LinearLayout>
 
     </LinearLayout>

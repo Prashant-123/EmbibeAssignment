@@ -1,10 +1,12 @@
-package com.embibeassignment;
+package com.embibeassignment.utils;
 
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+
+import com.embibeassignment.models.MovieModel;
 
 public class DBHelper extends SQLiteOpenHelper {
 
@@ -17,6 +19,8 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final String IMAGE = "image";
     public static final String YEAR = "year";
     public static final String RATING = "rating";
+    public static final String OVERVIEW = "overview";
+    public static final String GENRE = "genre";
 
     public static final String CREATE_TABLE =
             "CREATE TABLE " + TABLE_NAME + "("
@@ -24,6 +28,8 @@ public class DBHelper extends SQLiteOpenHelper {
                     + IMAGE + " TEXT,"
                     + TITLE + " TEXT,"
                     + YEAR + " TEXT,"
+                    + OVERVIEW + " TEXT,"
+                    + GENRE + " TEXT,"
                     + RATING + " TEXT"
                     + ")";
 
@@ -52,18 +58,13 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL("DELETE FROM " + TABLE_NAME);
     }
 
-    public void insertMovie(String id, String title, String image, String year, String rating) {
+    public void insertMovie(String id, String title, String image, String year, String rating, String overview, String genre) {
         SQLiteDatabase db = getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(ID, id); contentValues.put(TITLE,title); contentValues.put(YEAR, year);
-        contentValues.put(IMAGE, image); contentValues.put(RATING, rating);
+        contentValues.put(IMAGE, image); contentValues.put(RATING, rating); contentValues.put(OVERVIEW, overview);
+        contentValues.put(GENRE, genre);
         db.insert(TABLE_NAME, null, contentValues);
-    }
-
-    public Cursor getAllMovies() {
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor res = db.rawQuery( "SELECT * FROM " + TABLE_NAME, null );
-        return res;
     }
 
     public MovieModel getMovie(String id) {
@@ -73,10 +74,12 @@ public class DBHelper extends SQLiteOpenHelper {
         if (cursor != null)
             cursor.moveToFirst();
 
-        MovieModel contact = new MovieModel(cursor.getString(cursor.getColumnIndex(TITLE)),
+        MovieModel movie = new MovieModel(cursor.getString(cursor.getColumnIndex(TITLE)),
                 cursor.getString(cursor.getColumnIndex(IMAGE)), cursor.getString(cursor.getColumnIndex(YEAR)),
-                        cursor.getString(cursor.getColumnIndex(ID)), cursor.getFloat(cursor.getColumnIndex(RATING)));
+                        cursor.getString(cursor.getColumnIndex(ID)), cursor.getFloat(cursor.getColumnIndex(RATING)),
+                cursor.getString(cursor.getColumnIndex(OVERVIEW)),
+                cursor.getString(cursor.getColumnIndex(GENRE)));
         // return contact
-        return contact;
+        return movie;
     }
 }

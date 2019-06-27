@@ -1,26 +1,22 @@
-package com.embibeassignment;
+package com.embibeassignment.ui;
 
-import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -31,32 +27,28 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.androidnetworking.AndroidNetworking;
-import com.androidnetworking.error.ANError;
-import com.androidnetworking.interfaces.JSONObjectRequestListener;
+import com.embibeassignment.models.MovieModel;
+import com.embibeassignment.R;
+import com.embibeassignment.adapter.MovieAdapter;
+import com.embibeassignment.utils.BackgroundService;
+import com.embibeassignment.utils.DBHelper;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.ArrayList;
-
-import static android.content.Context.NOTIFICATION_SERVICE;
 
 public class Movies extends Fragment {
 
     public Movies() {}
     
     public static final String TAG =  "TAG";
-    public static String CHANNEL_ID = "1";
+    private static final String CHANNEL_ID = "1";
     private DBHelper db;
     private MaterialToolbar toolbar;
     private RecyclerView rv;
     private MovieAdapter adapter;
-    public static ArrayList<MovieModel> movie_list = new ArrayList<>();
+    public static final ArrayList<MovieModel> movie_list = new ArrayList<>();
     public static final String BROADCAST_ACTION = "broadcast_action";
     public static final String BROADCAST_DATA = "broadcast_data";
     private IntentFilter intentFilter;
@@ -101,12 +93,12 @@ public class Movies extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        getContext().registerReceiver(reciever, intentFilter);
+        getContext().registerReceiver(receiver, intentFilter);
     }
 
     @Override
     public void onPause() {
-        getContext().unregisterReceiver(reciever);
+        getContext().unregisterReceiver(receiver);
         getContext().stopService(serviceIntent);
         super.onPause();
     }
@@ -131,19 +123,19 @@ public class Movies extends Fragment {
         });
         super.onCreateOptionsMenu(menu,inflater);
     }
-    private BroadcastReceiver reciever = new BroadcastReceiver() {
+    private final BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             MovieModel movie = db.getMovie(intent.getStringExtra(BROADCAST_DATA));
             movie_list.add(movie);
 
-            Notify(movie.imageUrl, movie.title, movie.title);
+            Notify(movie.imageUrl, movie.title, movie.overview);
 
             adapter.notifyDataSetChanged();
         }
     };
 
-    public void Notify(final String url, final String title, final String overview) {
+    private void Notify(final String url, final String title, final String overview) {
 
 
         Picasso.with(context).load(url).into(new Target() {
@@ -152,9 +144,10 @@ public class Movies extends Fragment {
                 // loaded bitmap is here (bitmap)
                 NotificationCompat.Builder builder = new NotificationCompat.Builder(context, CHANNEL_ID)
                         .setSmallIcon(R.drawable.ic_icon)
-                        .setContentTitle(title)
-                        .setContentText(overview)
+                        .setContentTitle("New Movie Available: " + title)
                         .setLargeIcon(bitmap)
+                        .setContentText(overview)
+                        .setColor(getResources().getColor(R.color.colorPrimary))
                         .setStyle(new NotificationCompat.BigTextStyle().bigText(overview));
                 int id = 0;
                 NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
@@ -167,16 +160,6 @@ public class Movies extends Fragment {
             @Override
             public void onPrepareLoad(Drawable placeHolderDrawable) {}
         });
-
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(context, CHANNEL_ID)
-                .setSmallIcon(R.drawable.ic_icon)
-                .setContentTitle("Title")
-                .setContentText("Content")
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT);
-
-        int id = 0;
-        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
-        notificationManager.notify(id++, builder.build());
     }
 
     private void setupNotificationChannel() {
@@ -192,6 +175,4 @@ public class Movies extends Fragment {
             manager.createNotificationChannel(channel);
         }
     }
-
-
 }

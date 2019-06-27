@@ -1,4 +1,4 @@
-package com.embibeassignment;
+package com.embibeassignment.ui;
 
 import android.os.Bundle;
 import android.os.Handler;
@@ -10,6 +10,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+
+import com.embibeassignment.R;
+
+import java.util.Objects;
 
 public class SplashScreen extends Fragment {
 
@@ -24,7 +28,7 @@ public class SplashScreen extends Fragment {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                FragmentTransaction ft = getFragmentManager().beginTransaction();
+                FragmentTransaction ft = Objects.requireNonNull(getFragmentManager()).beginTransaction();
                 ft.replace(R.id.main_frame, new Movies());
                 ft.commit();
             }

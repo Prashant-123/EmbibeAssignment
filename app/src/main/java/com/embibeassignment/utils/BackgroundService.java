@@ -1,4 +1,4 @@
-package com.embibeassignment;
+package com.embibeassignment.utils;
 
 import android.app.Service;
 import android.content.Intent;
@@ -8,19 +8,21 @@ import android.util.Log;
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
+import com.embibeassignment.BuildConfig;
+import com.embibeassignment.ui.Movies;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Timer;
 import java.util.TimerTask;
 
-import static com.embibeassignment.Movies.TAG;
-import static com.embibeassignment.MainActivity.results;
+import static com.embibeassignment.ui.Movies.TAG;
+import static com.embibeassignment.ui.MainActivity.results;
 
 public class BackgroundService extends Service {
 
-    private String API_KEY = BuildConfig.API_KEY;
     private Timer timer;
     private DBHelper db;
     private TimerTask task;
@@ -39,8 +41,6 @@ public class BackgroundService extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        task.cancel();
-        timer.cancel();
     }
 
     @Override
@@ -50,9 +50,6 @@ public class BackgroundService extends Service {
             int index = 0;
             @Override
             public void run() {
-
-                Log.i(TAG, "run: " + "Thread executed");
-
                 if (index < results.length()) {
                     try {
                         JSONObject response = (JSONObject) results.get(index);
@@ -78,7 +75,8 @@ public class BackgroundService extends Service {
     }
 
 
-    public void GetImdbId(String tmdb_id) {
+    private void GetImdbId(String tmdb_id) {
+        String API_KEY = BuildConfig.API_KEY;
         AndroidNetworking.get("https://api.themoviedb.org/3/movie/{id}?api_key={api_key}")
                 .addPathParameter("id", tmdb_id)
                 .addPathParameter("api_key", API_KEY)
@@ -89,11 +87,25 @@ public class BackgroundService extends Service {
 
                     String title = response.getString("title");
                     String imageUrl = "https://image.tmdb.org/t/p/w400".concat(response.getString("poster_path"));
-                    String year = response.getString("release_date");
+                    String year = response.getString("release_date").substring(0, 4);
                     String id = response.getString("imdb_id");
+                    String overview = response.getString("overview");
                     float rating = Float.parseFloat(String.valueOf(response.getDouble("vote_average")))/2;
 
-                    db.insertMovie(id, title, imageUrl, year, String.valueOf(rating));
+                    StringBuilder genre = new StringBuilder();
+
+                    JSONArray genres = response.getJSONArray("genres");
+                    for (int i=0; i<genres.length(); i++) {
+                        JSONObject g = genres.getJSONObject(i);
+                        genre.append(g.getString("name").concat(" | "));
+
+                        try {
+                            if (i == genres.length()-1)
+                                db.insertMovie(id, title, imageUrl, year, String.valueOf(rating), overview, genre.substring(0, genre.length()-2));
+                        } catch (Exception e) {
+                            db.insertMovie(id, title, imageUrl, year, String.valueOf(rating), overview, "No Genre Specified");
+                        }
+                    }
 
                     Intent broadcastIntent = new Intent();
                     broadcastIntent.setAction(Movies.BROADCAST_ACTION);

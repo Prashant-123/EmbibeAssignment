@@ -3,10 +3,18 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/toolbar"
-    android:background="@color/transparent"
     android:elevation="0dp"
     app:theme="@style/Theme.AppCompat.Light.DarkActionBar"
     android:layout_width="match_parent"
     android:layout_height="?actionBarSize">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Movies App"
+        android:textColor="@color/white"
+        android:fontFamily="@font/montserrat"
+        android:textStyle="bold"
+        android:textSize="20sp" />
 
 </com.google.android.material.appbar.MaterialToolbar>

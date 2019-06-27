@@ -1,6 +1,9 @@
-package com.embibeassignment;
+package com.embibeassignment.utils;
 
 import android.widget.Filter;
+
+import com.embibeassignment.models.MovieModel;
+import com.embibeassignment.adapter.MovieAdapter;
 
 import java.util.ArrayList;
 
